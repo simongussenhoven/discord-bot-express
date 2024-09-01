@@ -26,9 +26,16 @@ app.use(express.json());
 let serverStatus: ServerStatus = ServerStatus.UNKNOWN;
 let channel = null as any;
 
+
+
 const client = initClient();
 client.once("ready", async () => console.log("Bot was started successfully!"));
-client.login(process.env.TOKEN);
+if (process.env.TOKEN) {
+  client.login(process.env.TOKEN)
+}
+else {
+  console.error("No token provided")
+}
 client.on("messageCreate", (message: Message) => {
   channel = message.channel;
   readMessage(message, serverStatus, client);
