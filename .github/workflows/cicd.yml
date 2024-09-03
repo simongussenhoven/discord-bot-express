@@ -24,14 +24,5 @@ jobs:
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
           SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
       - run: cat .env
-      - name: Check for running processes
-        run: |
-          pm2 list
-          if [ $? -eq 0 ]; then
-            pm2 stop all
-            pm2 delete all
-          else
-            echo "No processes running, nothing to stop or delete."
-          fi
       - run: npm i
       - run: npm start
