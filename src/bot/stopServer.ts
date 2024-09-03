@@ -4,6 +4,8 @@ import { sendError } from './sendError'
 import { sshConfig } from '../../config/sshConfig';
 
 export const stopServer = (message: Message, client: any) => {
+  console.log(process.env.PRIVATE_KEY)
+  console.log(JSON.stringify(sshConfig))
   console.log('Stopping server...');
   const sshClient = new SshClient();
   sshClient.on('ready', () => {

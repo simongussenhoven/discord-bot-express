@@ -19,8 +19,10 @@ jobs:
       - name: create .env file from secrets
         run: |
           echo "BOT_TOKEN=$BOT_TOKEN" >> .env
+          echo "PRIVATE_KEY=$PRIVATE_KEY" >> .env
         env:
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+          PRIVARTE_KEY: ${{ secrets.PRIVATE_KEY }}
       - run: cat .env
       - run: npm i
       - run: npm start
