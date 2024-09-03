@@ -29,7 +29,7 @@ let channel = null as any;
 const client = initClient();
 client.once("ready", async () => console.log("Bot was started successfully!"));
 if (process.env.BOT_TOKEN) {
-  client.login(process.env.TOKEN)
+  client.login(process.env.BOT_TOKEN)
 }
 else {
   console.error("No token provided")

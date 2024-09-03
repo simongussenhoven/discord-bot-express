@@ -18,9 +18,9 @@ jobs:
           cache: "npm"
       - name: create .env file from secrets
         run: |
-          echo "TOKEN=$TOKEN" >> .env
+          echo "BOT_TOKEN=$BOT_TOKEN" >> .env
         env:
-          TOKEN: ${{ secrets.TOKEN }}
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
       - run: cat .env
       - run: npm i
       - run: npm start
