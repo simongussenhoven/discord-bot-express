@@ -1,7 +1,7 @@
 module.exports = {
   apps: [
     {
-      name: "server",
+      name: "discord-bot",
       script: "./src/app.ts",
       interpreter: "node",
       interpreterArgs: "--import tsx",

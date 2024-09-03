@@ -16,5 +16,11 @@ jobs:
         with:
           node-version: 20
           cache: "npm"
+      - name: create .env file from secrets
+        run: |
+          echo "MY_ENV_VAR=$MY_ENV_VAR" >> .env
+          echo "ANOTHER_ENV_VAR=$ANOTHER_ENV_VAR" >> .env
+        env:
+          MY_ENV_VAR: ${{ secrets.TOKEN }}
       - run: npm i
       - run: npm start
