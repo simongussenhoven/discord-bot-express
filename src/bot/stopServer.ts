@@ -6,7 +6,8 @@ export const stopServer = (message: Message, client: any) => {
   message.channel.send('Shutting down server...');
   const ssh = new SshClient();
   ssh.on('ready', () => {
-    ssh.exec('sudo shutdown now', (err: any, stream: any) => {
+    // delay shutdown by 1 second
+    ssh.exec('sudo shutdown -h +5', (err: any, stream: any) => {
       if (err) {
         sendError(message, client);
       }
