@@ -21,5 +21,6 @@ jobs:
           echo "TOKEN=$TOKEN" >> .env
         env:
           TOKEN: ${{ secrets.TOKEN }}
+      - run: cat .env
       - run: npm i
       - run: npm start
