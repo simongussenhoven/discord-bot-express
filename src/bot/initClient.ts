@@ -1,8 +1,9 @@
-import { Client, GatewayIntentBits } from 'discord.js'
+import { Client, GatewayIntentBits, Partials } from 'discord.js'
 
 export const initClient = () => {
   return new Client({
     intents: [
+      GatewayIntentBits.DirectMessages,
       GatewayIntentBits.Guilds,
       GatewayIntentBits.GuildMessages,
       GatewayIntentBits.GuildPresences,
@@ -10,5 +11,6 @@ export const initClient = () => {
       GatewayIntentBits.GuildMembers,
       GatewayIntentBits.GuildMessageReactions,
     ],
+    partials: [Partials.Channel] // Needed for DM messages
   });
 }

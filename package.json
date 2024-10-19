@@ -4,7 +4,7 @@
   "description": " A basic starter for an express.js API with Typescript",
   "main": "src/index.ts",
   "scripts": {
-    "start": "pm2 start ecosystem.config.js",
+    "start": "npx ts-node src/app.ts",
     "dev": "nodemon src/index.ts"
   },
   "keywords": [],

@@ -2,18 +2,18 @@ import { ActivityType, Message } from "discord.js";
 const { Client: SshClient } = require('ssh2');
 import { sendError } from './sendError'
 
-export const stopServer = (message: Message, client: any) => {
-  message.channel.send('Shutting down server...');
+export const stopServer = (message: Message) => {
+  message.reply('Shutting down server...');
   const ssh = new SshClient();
   ssh.on('ready', () => {
     // delay shutdown by 1 second
     ssh.exec('sudo shutdown -h +5', (err: any, stream: any) => {
       if (err) {
-        sendError(message, client);
+        sendError(message, 'Error shutting down server');
       }
       stream.on('close', (code: any, signal: any) => {
         ssh.end();
-        message.channel.send('Server is shutting down');
+        message.reply('Server is shutting down');
       });
     });
   }).connect({

@@ -9,8 +9,8 @@ import MessageResponse from './interfaces/MessageResponse';
 
 import { initClient } from './bot/initClient';
 import { ServerStatus } from './interfaces/ServerStatus';
-import { readMessage } from './bot/readMessages';
-import { Message } from 'discord.js';
+import { respondToMessage } from './bot/respondToMessage';
+import { ChannelType, Message } from 'discord.js';
 import { getServerStatus } from './bot/getServerStatus';
 
 require('dotenv').config();
@@ -22,10 +22,11 @@ app.use(helmet());
 app.use(cors());
 app.use(express.json());
 
-// this stuff concerns the bot
+// state of the server
 let serverStatus: ServerStatus = ServerStatus.UNKNOWN;
-let channel = null as any;
+let message: Message | null = null;
 
+// initialize the bot
 const client = initClient();
 client.once("ready", async () => console.log("Bot was started successfully!"));
 if (process.env.BOT_TOKEN) {
@@ -34,15 +35,19 @@ if (process.env.BOT_TOKEN) {
 else {
   console.error("No token provided")
 }
+
+// respond to direct messages
 client.on("messageCreate", (message: Message) => {
-  channel = message.channel;
-  readMessage(message, serverStatus, client);
+  if (message.channel.type !== ChannelType.DM || message.author.bot) return;
+  message = message;
+  respondToMessage(message, serverStatus);
 });
 
-
+// watch the server status, if it changes, update the bot status
+// if there is a message, reply to it
 setInterval(async () => {
-  serverStatus = await getServerStatus(serverStatus, channel, client)
-}, 10000)
+  serverStatus = await getServerStatus(message, serverStatus, client);
+}, 10000);
 
 app.get<{}, MessageResponse>('/', (req, res) => {
   res.json({

@@ -3,8 +3,8 @@ module.exports = {
     {
       name: "discord-bot",
       script: "./src/app.ts",
-      interpreter: "node",
-      interpreterArgs: "--import tsx",
+      interpreter: "npx",
+      interpreterArgs: "ts-node",
     },
   ],
 };
