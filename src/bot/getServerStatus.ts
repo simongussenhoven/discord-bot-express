@@ -2,23 +2,23 @@ import { ActivityType, Client } from "discord.js";
 import { ServerStatus } from "../interfaces/ServerStatus";
 import { Message } from "discord.js";
 
-export const getServerStatus = async (message: Message | null, serverStatus: ServerStatus, client: Client) => {
+export const getServerStatus = async (client: Client, currentStatus: ServerStatus) => {
+  const type = ActivityType.Custom
+  const user = client.user;
   try {
     const response = await fetch('http://192.168.2.99:5000');
     if (response) {
       console.info(new Date().toLocaleString() + ': Server is online');
-      if (serverStatus === ServerStatus.OFFLINE) message?.reply('Server status changed to online');
-      client.user?.setActivity("Server is online", { type: ActivityType.Custom });
-      client.user?.setStatus("online");
-      return ServerStatus.ONLINE;
+      user?.setActivity("Server is online", { type });
+      user?.setStatus("online");
+      return currentStatus === ServerStatus.STARTING ? ServerStatus.ONLINE : currentStatus;
     }
   }
   catch (error) {
     console.info(new Date().toLocaleString() + ': Server is offline');
-    client.user?.setActivity("Server is offline", { type: ActivityType.Custom });
-    client.user?.setStatus("dnd");
-    if (serverStatus === ServerStatus.ONLINE) message?.reply('Server status changed to offline');
-    return ServerStatus.OFFLINE;
+    user?.setActivity("Server is offline", { type });
+    user?.setStatus("dnd");
+    return currentStatus === ServerStatus.STOPPING ? ServerStatus.OFFLINE : currentStatus;
   }
   return ServerStatus.UNKNOWN;
 }

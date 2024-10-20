@@ -3,8 +3,8 @@ const { Client: SshClient } = require('ssh2');
 import { sendError } from './sendError'
 
 export const stopServer = (message: Message) => {
-  message.reply('Shutting down server...');
   const ssh = new SshClient();
+  console.log(`${message.author} stopped the server`);
   ssh.on('ready', () => {
     // delay shutdown by 1 second
     ssh.exec('sudo shutdown -h +5', (err: any, stream: any) => {
@@ -13,7 +13,7 @@ export const stopServer = (message: Message) => {
       }
       stream.on('close', (code: any, signal: any) => {
         ssh.end();
-        message.reply('Server is shutting down');
+        message.reply('👍 Server is shutting down');
       });
     });
   }).connect({

@@ -40,13 +40,13 @@ else {
 client.on("messageCreate", (message: Message) => {
   if (message.channel.type !== ChannelType.DM || message.author.bot) return;
   message = message;
-  respondToMessage(message, serverStatus);
+  serverStatus = respondToMessage(message, serverStatus);
 });
 
 // watch the server status, if it changes, update the bot status
 // if there is a message, reply to it
 setInterval(async () => {
-  serverStatus = await getServerStatus(message, serverStatus, client);
+  serverStatus = await getServerStatus(client, serverStatus);
 }, 10000);
 
 app.get<{}, MessageResponse>('/', (req, res) => {
