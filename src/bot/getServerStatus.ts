@@ -1,8 +1,7 @@
 import { ActivityType, Client } from "discord.js";
 import { ServerStatus } from "../interfaces/ServerStatus";
-import { Message } from "discord.js";
 
-export const getServerStatus = async (client: Client, currentStatus: ServerStatus) => {
+export const getServerStatus = async (client: Client) => {
   const type = ActivityType.Custom
   const user = client.user;
   try {
@@ -11,14 +10,14 @@ export const getServerStatus = async (client: Client, currentStatus: ServerStatu
       console.info(new Date().toLocaleString() + ': Server is online');
       user?.setActivity("Server is online", { type });
       user?.setStatus("online");
-      return currentStatus === ServerStatus.STARTING ? ServerStatus.ONLINE : currentStatus;
+      return ServerStatus.ONLINE;
     }
   }
   catch (error) {
     console.info(new Date().toLocaleString() + ': Server is offline');
     user?.setActivity("Server is offline", { type });
     user?.setStatus("dnd");
-    return currentStatus === ServerStatus.STOPPING ? ServerStatus.OFFLINE : currentStatus;
+    return ServerStatus.OFFLINE;
   }
   return ServerStatus.UNKNOWN;
 }

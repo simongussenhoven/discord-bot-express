@@ -37,16 +37,25 @@ else {
 }
 
 // respond to direct messages
-client.on("messageCreate", (message: Message) => {
-  if (message.channel.type !== ChannelType.DM || message.author.bot) return;
-  message = message;
-  serverStatus = respondToMessage(message, serverStatus);
+client.on("messageCreate", (newMessage: Message) => {
+  if (newMessage.channel.type !== ChannelType.DM || newMessage.author.bot) return;
+  message = newMessage;
+  respondToMessage(message, serverStatus);
 });
 
 // watch the server status, if it changes, update the bot status
 // if there is a message, reply to it
 setInterval(async () => {
-  serverStatus = await getServerStatus(client, serverStatus);
+  const response: ServerStatus = await getServerStatus(client);
+  if (response !== serverStatus) {
+    if (message) {
+      if (response === ServerStatus.ONLINE) message.reply('🟢 Server is online');
+      if (response === ServerStatus.OFFLINE) message.reply('🔴 Server is offline');
+    }
+    serverStatus = response;
+    message = null;
+  }
+
 }, 10000);
 
 app.get<{}, MessageResponse>('/', (req, res) => {
